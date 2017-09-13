@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>README &#8212; documentation msgTracker365 </title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Lien permanent vers ce titre">¶</a></h1>
+</div>
+<div class="section" id="informations-generales-msgtracker365">
+<h1>Informations générales msgTracker365<a class="headerlink" href="#informations-generales-msgtracker365" title="Lien permanent vers ce titre">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Autheur:</th><td class="field-body"><a class="reference external" href="https://github.com/poltergeist42">Poltergeist42</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Projet:</th><td class="field-body">msgTracker365</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dépôt GitHub:</th><td class="field-body"><a class="reference external" href="https://github.com/poltergeist42/msgTracker365">https://github.com/poltergeist42/msgTracker365</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">documentation:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Licence:</th><td class="field-body">CC BY-NC-SA 4.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Liens:</th><td class="field-body"><a class="reference external" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="description">
+<h2>Déscription<a class="headerlink" href="#description" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Se projet est un projet PowerShell. L&#8217;objectif est de créer un script qui se connect
+automatiquement à Office365, intéroge le Suivie de Message et envoie automatiquement le
+résultat par mail</p>
+<p><strong>N.B</strong> : dans la version &#8220;20170913&#8221;, l&#8217;envoie de mail doit être effectué depuis
+un logiciel tiers.</p>
+</div>
+<div class="section" id="prerequis">
+<h2>Prérequis<a class="headerlink" href="#prerequis" title="Lien permanent vers ce titre">¶</a></h2>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Ce script vous permettant de vous connecter à Office365 au travers de PowerShell,
+il faut avoir installer les logiciels de l&#8217;étape 1 de la page Web suivante :</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://technet.microsoft.com/library/dn975125.aspx">https://technet.microsoft.com/library/dn975125.aspx</a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Vous devez disposez d&#8217;un compte Office365 ayant les autorisations ci-dessous,
+conformément aut tableau décris dans le <a class="reference external" href="https://technet.microsoft.com/fr-fr/library/jj200673(v=exchg.150).aspx">document Technet</a> :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Gestion de l’organisation (Organization management)</li>
+<li>Gestion de la conformité (Compliance Management)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Votre machine doit être autorisée à éxecuter des scripts (<a class="reference external" href="https://docs.microsoft.com/fr-fr/powershell/module/Microsoft.PowerShell.Security/Set-ExecutionPolicy?view=powershell-5.1">Set-ExecutionPolicy</a>)</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Lien permanent vers ce titre">¶</a></h2>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first"><strong>Personalisation</strong></p>
+<blockquote>
+<div><p>Se script doit être personalisé. Pour faciliter cette personnalisation, l&#8217;ensemble
+des variables à modifier ont été placées au début du script sous
+l&#8217;entête &#8220;Configuration&#8221;.</p>
+<p><strong>Détail des variables à personaliser</strong> :</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">vCfgUser365:</th><td class="field-body"><p class="first">Login utilisé pour l&#8217;authentification sur le compte Office365 / Exchange Online.</p>
+<dl class="docutils">
+<dt><strong>N.B</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Le compte Office365 utilisé doit au minimum faire partie des groupes :</span></dt>
+<dd><ul class="first last simple">
+<li>Gestion de l’organisation (Organization management)</li>
+<li>Gestion de la conformité (Compliance Management)</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attention</strong> : &#8220;<a class="reference external" href="mailto:user&#37;&#52;&#48;domain&#46;dom">user<span>&#64;</span>domain<span>&#46;</span>dom</a>&#8221; doit être remplacer par votre nom
+d&#8217;utilisateur dans la version en production de ce script.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vCfgPwd365:</th><td class="field-body"><p class="first">Mot de passe utiliser avec le login du compte  Office365 / Exchange Online.</p>
+<p><strong>Attention</strong> : &#8220;<a class="reference external" href="mailto:P&#37;&#52;&#48;sSwOrd">P<span>&#64;</span>sSwOrd</a>&#8221; doit être remplacé par votre mot de passe
+dans la version en production de ce script.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vDomain:</th><td class="field-body"><p class="first">Nom de domaine a auditer  sur Office365 / Exchange Online.</p>
+<p><strong>Attention</strong> : &#8220;<a href="#id1"><span class="problematic" id="id2">*</span></a>&#64;domain.dom&#8221; doit être remplacer par votre domain
+dans la version en production de ce script.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vCfgStartDate:</th><td class="field-body"><p class="first">Cette valeur (en nombre de jour) permet de définir la date a partir de
+la quelle on récupere les informations. Il s&#8217;agit de la date la plus ancienne.
+Cette date ne peut depasser 90 jours.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vCfgEndDate:</th><td class="field-body"><p class="first">Cette valeur (en nombre de jour) permet de définir la date jusqu&#8217;a laquelle on
+récupère les informations. il s&#8217;agit de la date la plus recente. Si cette
+valeur est égale a 0, la date de fin serat la date actuelle.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vCfgPath:</th><td class="field-body"><p class="first">Chemin utilisé pour enregistrer les fichiers identifié
+par $vCfgExpCSV et $vCfgExpBody. Si &#8216;vCfgPath&#8217; vaut &#8216;.&#8217;,
+les fichiers seront créés dans le répertoire d&#8217;éxecution de ce script.</p>
+<p><strong>N.B</strong> : le chemin doit éxister sur le PC avant l&#8217;éxecution de se script.
+Ce chemin peut être rélatif ou absolu.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vCfgExpCSV:</th><td class="field-body"><p class="first">Nom du fichier contenant le résultat de la requette. Les valeurs contenues
+dans se fichier sont séparée par des virgules. la convention veut donc que
+l&#8217;extention du fichier soit au format &#8220;CSV&#8221; (Comma-separated values). Ce
+fichier est généré à l&#8217;endroit pointer par &#8220;$vCfgPath&#8221;.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vCfgExpBody:</th><td class="field-body"><p class="first last">Nom du fichier contenant le corp de l&#8217;email. Ce fichier peut être utilisé
+pour envoyer un email depuis un logiciel tiers (ex : smtpsend).
+Ce fichier est généré à l&#8217;endroit pointé par &#8220;$vCfgPath&#8221;.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Automatisation et planification</strong></p>
+<blockquote>
+<div><p>Si la tâche doit être effectuée régulierement, il faut créer une tache planifié.
+On peut s&#8217;aider de la page cidessous pour executer un script PowerShell dans une
+tâche planifiée.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://www.adminpasbete.fr/executer-script-powershell-via-tache-planifiee/">https://www.adminpasbete.fr/executer-script-powershell-via-tache-planifiee/</a></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="arborescence-du-projet">
+<h2>Arborescence du projet<a class="headerlink" href="#arborescence-du-projet" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour aider à la compréhension de mon organisation, voici un bref déscrptif de
+l&#8217;arborescence de se projet.Cette arborescence est à reproduire si vous récupérez ce dépôt
+depuis GitHub.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openFile</span>               <span class="c1"># Dossier racine du projet (non versionner)</span>
+<span class="o">|</span>
+<span class="o">+--</span><span class="n">project</span>             <span class="c1"># (branch master) contient l&#39;ensemble du projet en lui même</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_1_userDoc</span>       <span class="c1"># Contien toute la documentation relative au projet</span>
+<span class="o">|</span>  <span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="o">|</span>   \<span class="o">--</span><span class="n">source</span>       <span class="c1"># Dossier réunissant les sources utilisées par Sphinx</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_2_modelisation</span>  <span class="c1"># contien tous les plans et toutes les modélisations du projet</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+--</span><span class="n">_3_software</span>      <span class="c1"># Contien toute la partie programmation du projet</span>
+<span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  \<span class="o">--</span><span class="n">_4_PCB</span>           <span class="c1"># Contient toutes les parties des circuits imprimés (routage,</span>
+<span class="o">|</span>                      <span class="c1"># implantation, typon, fichier de perçage, etc</span>
+<span class="o">|</span>
+\<span class="o">--</span><span class="n">webDoc</span>              <span class="c1"># Dossier racine de la documentation qui doit être publiée</span>
+   <span class="o">|</span>
+   \<span class="o">--</span><span class="n">html</span>             <span class="c1"># (branch gh-pages) C&#39;est dans se dosier que Sphinx vat</span>
+                       <span class="c1"># générer la documentation à publié sur internet</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">README</a></li>
+<li><a class="reference internal" href="#informations-generales-msgtracker365">Informations générales msgTracker365</a><ul>
+<li><a class="reference internal" href="#description">Déscription</a></li>
+<li><a class="reference internal" href="#prerequis">Prérequis</a></li>
+<li><a class="reference internal" href="#utilisation">Utilisation</a></li>
+<li><a class="reference internal" href="#arborescence-du-projet">Arborescence du projet</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/includeMe.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Poltergeist42.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/includeMe.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

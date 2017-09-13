@@ -4,10 +4,10 @@ Infos
 
     :Projet:             msgTracker365
     :Nom du fichier:     msgTracker365.ps1
-    :depot GitHub:       
-    :documentation:      
+    :depot GitHub:       https://github.com/poltergeist42/msgTracker365
+    :documentation:      https://poltergeist42.github.io/msgTracker365/
     :Autheur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-    :Version:            20170912
+    :Version:            20170913
 
 ####
 
@@ -48,7 +48,7 @@ Reference Web
 #>
 
 cls
-Write-Host "Debut du script"
+Write-Host "`t## Debut du script : msgTracker365 ##"
 
 
 #########################
@@ -67,7 +67,7 @@ $vCfgUser365 = "user@domain.dom"
     # Attention : "user@domain.dom" doit etre remplacer par votre nom d'utilisateur
     # dans la version en production de ce script
     
-$vCfgPwd365 = ConvertTo-SecureString -String "P@sSwOrd" -AsPlainText -Force
+$vCfgPwd365 = "P@sSwOrd"
     # Mot de passe utiliser avec le login du compte  Office365 / Exchange Online
     #
     # Attention : "P@sSwOrd" doit etre remplace par votre mot de passe
@@ -89,11 +89,13 @@ $vCfgEndDate = 0
     # récupère les informations. il s'agit de la date la plus recente. Si cette valeur est
     # egale a 0, la date de fin serat la date actuelle
 
-$vCfgPath = "C:\utilSRV\Scripts\msgTracker"
+$vCfgPath = ".\"
     # Chemin utiliser pour enregistrer les fichiers identifier
-    # par $vCfgExpCSV et $vCfgExpBody
+    # par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\', les fichiers seront crees
+    # dans le repertoire d'execution de ce script
     #
-    # N.B : le chemin doit exister sur le PC avant l'execution de se script
+    # N.B : le chemin doit exister sur le PC avant l'execution de se script. Ce chemin
+    # peut etre relatif ou absolu
     
 $vCfgExpCSV = "Suivie_de_message.csv"
     # Nom du fichier contenant le resultat de la requette. Les valeurs contenues dans se
@@ -113,15 +115,16 @@ $vCfgExpBody = "Body.txt"
 #                        #
 ##########################
 
-$Credential365 = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $vCfgUser365, $vCfgPwd365
+$vPwd365 = ConvertTo-SecureString -String $vCfgPwd365 -AsPlainText -Force
+$Credential365 = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $vCfgUser365, $vPwd365
     # il faut utiliser l'option : -Credential $Credential365
     # Pour pouvoir l'utiliser dans une requette
 
 $vStartDate = (Get-Date).adddays(-1 * $vCfgStartDate)
 $vEndDate = (Get-Date).adddays(-1 * $vCfgEndDate)
 
-$vEndDateShort = $vEndDate.ToShortDateString()
 $vStartDateShort = $vStartDate.ToShortDateString()
+$vEndDateShort = $vEndDate.ToShortDateString()
 
 $vCSV_FQFN = "$vCfgPath\$vCfgExpCSV"
 $vBody_FQFM = "$vCfgPath\$vCfgExpBody"
@@ -168,8 +171,7 @@ envoyer automatiquement un mail avec $vBody dans le corp du message et $vCSV_FQF
 #                        #
 ##########################
 
-Write-Host "Fin du script"
 ## Fermeture de toutes les sessions distantes (les PSSession)
 Get-PSSession | Remove-PSSession
 
-    
+Write-Host "`n`t## Fin du script : msgTracker365 ##"

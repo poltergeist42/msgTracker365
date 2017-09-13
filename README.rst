@@ -4,10 +4,12 @@ Informations générales msgTracker365
 
 :Autheur:            `Poltergeist42 <https://github.com/poltergeist42>`_
 :Projet:             msgTracker365
-:dépôt GitHub:       
-:documentation:      
+:dépôt GitHub:       https://github.com/poltergeist42/msgTracker365
+:documentation:      https://poltergeist42.github.io/msgTracker365/
 :Licence:            CC BY-NC-SA 4.0
 :Liens:              https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+####
 
 Déscription
 ===========
@@ -16,8 +18,20 @@ Se projet est un projet PowerShell. L'objectif est de créer un script qui se co
 automatiquement à Office365, intéroge le Suivie de Message et envoie automatiquement le
 résultat par mail
 
-**N.B** : dans la version "20170912", l'envoie de mail doit être effectué depuis
+**N.B** : dans la version "20170913", l'envoie de mail doit être effectué depuis
 un logiciel tiers.
+ 
+####
+
+Téléchargement / Installation
+=============================
+
+Vous pouvez télécharger le projet entier directement depuis son `dépôt GitHub <https://github.com/poltergeist42/msgTracker365.git>`_ .
+ou récupérer juste le script depuis le dossier `_3_software du dépôt GitHub <https://github.com/poltergeist42/msgTracker365/tree/master/_3_software>`_ .
+
+Le script n'a pas besoin d'installation, il doit simplement être éxécuté. Voir 'Prérequis' et 'Utilisation'
+   
+####   
  
 Prérequis
 =========
@@ -35,6 +49,8 @@ Prérequis
     
     #. Votre machine doit être autorisée à éxecuter des scripts (`Set-ExecutionPolicy <https://docs.microsoft.com/fr-fr/powershell/module/Microsoft.PowerShell.Security/Set-ExecutionPolicy?view=powershell-5.1>`_)
 
+####
+    
 Utilisation
 ===========
 
@@ -79,10 +95,12 @@ Utilisation
             valeur est égale a 0, la date de fin serat la date actuelle.
             
         :vCfgPath:
-            Chemin utiliser pour enregistrer les fichiers identifier
-            par $vCfgExpCSV et $vCfgExpBody.
+            Chemin utilisé pour enregistrer les fichiers identifié
+            par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\',
+            les fichiers seront créés dans le répertoire d'éxecution de ce script.
 
-            **N.B** : le chemin doit exister sur le PC avant l'execution de se script.
+            **N.B** : le chemin doit éxister sur le PC avant l'éxecution de se script.
+            Ce chemin peut être rélatif ou absolu.
             
         :vCfgExpCSV:
             Nom du fichier contenant le résultat de la requette. Les valeurs contenues

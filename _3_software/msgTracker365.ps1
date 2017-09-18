@@ -7,7 +7,7 @@ Infos
     :depot_GitHub:       https://github.com/poltergeist42/msgTracker365
     :Documentation:      https://poltergeist42.github.io/msgTracker365/
     :Auteur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-    :Version:            20170914
+    :Version:            20170918
 
 ####
 
@@ -25,7 +25,7 @@ Descriptif
 ==========
 
     :Projet:            Ce projet est un projet PowerShell. L'objectif est de créer un
-                        Script qui se connecte automatiquement a Office365, interroge le
+                        Script qui se connecte automatiquement à Office365, interroge le
                         Suivie de Message et envoie automatiquement le résultat par mail
 
 ####
@@ -40,15 +40,25 @@ Reference Web
         # Se connecter à Office 365 PowerShell
     
     * https://technet.microsoft.com/fr-fr/library/dn568015.aspx
-        # Connexion a  tous les services Office 365
-        # a l'aide d'une seule fenetre Windows PowerShell
+        # Connexion à  tous les services Office 365
+        # à l'aide d'une seule fenêtre Windows PowerShell
+        
+    * https://technet.microsoft.com/EN-US/library/dn621038(v=exchg.160).aspx
+        # Liste des commandes pour Exchange Online (module MsOnline)
     
+####
+
+Liste des modules externes
+==========================
+
+    * MsOnline
+
 ####
 
 #>
 
 cls
-Write-Host "`t## Debut du script : msgTracker365 ##"
+Write-Host "`t## Début du script : msgTracker365 ##"
 
 
 #########################
@@ -77,7 +87,7 @@ $vCfgPwd365 = "P@sSwOrd"
    
 ## Paramètre pour le domaine à auditer
 $vDomain = "*@domain.dom"
-    # Nom de domaine a auditer  sur Office365 / Exchange Online
+    # Nom de domaine à auditer  sur Office365 / Exchange Online
     #
     # Attention : "*@domain.dom" doit être remplacé par votre domaine
     # dans la version en production de ce script
@@ -90,15 +100,27 @@ $vCfgStartDate = 7
     # dépasser 90 jours
 
 $vCfgEndDate = 0
-    # Cette valeur (en nombre de jour) permet de définir la date jusqu'a laquelle on
-    # récupère les informations. il s'agit de la date la plus récente. Si cette valeur est
+    # Cette valeur (en nombre de jour) permet de définir la date jusqu'à laquelle on
+    # récupère les informations. Il s'agit de la date la plus récente. Si cette valeur est
     # égale à 0, la date de fin sera la date actuelle
 
+    
+## Paramètre pour la quantité d'élément à afficher dans le suivie de message
+$vCfgNumOfPage = 1
+    # Cette valeur permet de déterminer le nombre de pages affichées
+    # dans le suivie de message. Cette valeur est comprise entre 1 et 5000.
+    # La valeur par défaut est de 1.
+    
+$vCfgItemPerPage = 1000
+    # Cette valeur permet de déterminer le nombre d'élément à afficher
+    # dans le suivie de message. Cette valeur est comprise entre 1 et 5000.
+    # La valeur par défaut est de 1000.
 
-## Paramètres pour la générations des fichiers    
+    
+## Paramètres pour la génération des fichiers    
 $vCfgPath = ".\"
     # Chemin utilisé pour enregistrer les fichiers identifié
-    # par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\', les fichiers seront crées
+    #par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\', les fichiers seront crées
     # dans le répertoire d'exécution de ce script
     #
     # N.B : le chemin doit exister sur le PC avant l'exécution de se script. Ce chemin
@@ -115,9 +137,17 @@ $vCfgExpBody = "Body.txt"
     # envoyer un email depuis un logiciel tiers (ex : smtpsend). Ce fichier est généré
     # à l'endroit pointe par "$vCfgPath"
     
+$vCfgEncoding = "Default"
+    # Permet de définir l'encodage des fichiers. La valeur "Default",
+    # récupère l'encodage du système depuis lequel est exécuter ce script.
+    # Les valeurs acceptées sont :
+    # "Unicode", "UTF7", "UTF8", "ASCII", "UTF32",
+    # "BigEndianUnicode", "Default", "OEM"
+
+    
     
 ## Paramètre de configuration de l'envoie de Mail
-$vCfgSendMail = $TRUE
+$vCfgSendMail = $False
     # Permet d'activer ou de désactiver l'envoie automatique du fichier '.csv' par mail.
     # Les valeurs acceptées sont :
     # * $TRUE   --> Envoie de mail activé
@@ -130,7 +160,7 @@ $vCfgSendMailFrom = "user01@example.com"
     # dans la version en production de ce script
     
 $vCfgSendMailTo = "user02@example.com"
-    # Adresse Mail du déstinataire
+    # Adresse Mail du destinataire
     #
     # Attention : "user02@example.com" doit être remplacé par l'adresse du destinataire
     # dans la version en production de ce script
@@ -177,7 +207,7 @@ $Credential365 = New-Object -TypeName "System.Management.Automation.PSCredential
     # il faut utiliser l'option : -Credential $Credential365
     # Pour pouvoir l'utiliser dans une requête
 
-if (vCfgSendMailAuth) {
+if ($vCfgSendMailAuth) {
     $vMailPwd = ConvertTo-SecureString -String $vCfgSendMailPwd -AsPlainText -Force
     $CredentialMail = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $vCfgSendMailUsr, $vMailPwd
     }
@@ -210,17 +240,17 @@ $exchangeSession =  New-PSSession -ConfigurationName Microsoft.Exchange -Connect
 Import-PSSession $exchangeSession -DisableNameChecking
 
 ## Suivie de message
-$vMsgTrace = Get-MessageTrace -RecipientAddress $vDomain -StartDate $vStartDate -EndDate $vEndDate | Sort-Object `
--Property Received | Select-Object Received, RecipientAddress, SenderAddress
+$vMsgTrace = Get-MessageTrace -RecipientAddress $vDomain -StartDate $vStartDate -EndDate $vEndDate -Page $vCfgNumOfPage -PageSize $vCfgItemPerPage | Sort-Object  `
+-Property Received | Select-Object Received, RecipientAddress, SenderAddress, Subject
     # Attention, Get-MessageTrace parcourt la liste du plus ancien (StartDate) vers le plus récent (EndDate)
 
 $vMsgTraceMeasure = $vMsgTrace | measure
 $vMsgTraceCount = $vMsgTraceMeasure.Count
 
-$vMsgTrace | Export-Csv -Path $vCSV_FQFN
-$vBody = "Bonjour.`n`nNombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domaine`  `'$vDomain`' : $vMsgTraceCount`n`nVous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'`n`nCordialement,`  l'équipe ICS"
+$vMsgTrace | Export-Csv -Path $vCSV_FQFN  -Delimiter ";" -Encoding $vCfgEncoding
+$vBody = "Bonjour.`n`nNombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domaine `'$vDomain`' : $vMsgTraceCount`n`nVous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'`n`nCordialement, l'équipe ICS"
 
-$vBody | Out-File -FilePath $vBody_FQFM
+$vBody | Out-File -FilePath $vBody_FQFM -Encoding $vCfgEncoding
 
 
 ##########################
@@ -229,24 +259,24 @@ $vBody | Out-File -FilePath $vBody_FQFM
 #                        #
 ##########################
 
-if (vCfgSendMail) {
+if ($vCfgSendMail) {
     if ($vCfgSendMailAuth) {
-        Send-MailMessage -From $vCfgSendMailFrom`
-        -To $vCfgSendMailTo`
-        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort"`
-        -Body $vBody`
-        -Attachments $vCSV_FQFN`
-        -Credential $CredentialMail`
-        -SmtpServer $vCfgSendMailSmtp`
+        Send-MailMessage -From $vCfgSendMailFrom `
+        -To $vCfgSendMailTo `
+        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort" `
+        -Body $vBody `
+        -Attachments $vCSV_FQFN `
+        -Credential $CredentialMail `
+        -SmtpServer $vCfgSendMailSmtp `
         -Port $vCfgSendMailPort
     }
     else {
-        Send-MailMessage -From $vCfgSendMailFrom`
-        -To $vCfgSendMailTo`
-        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort"`
-        -Body $vBody`
-        -Attachments $vCSV_FQFN`
-        -SmtpServer $vCfgSendMailSmtp`
+        Send-MailMessage -From $vCfgSendMailFrom `
+        -To $vCfgSendMailTo `
+        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort" `
+        -Body $vBody `
+        -Attachments $vCSV_FQFN `
+        -SmtpServer $vCfgSendMailSmtp `
         -Port $vCfgSendMailPort
     }}
 

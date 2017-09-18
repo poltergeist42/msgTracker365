@@ -4,10 +4,10 @@ Infos
 
     :Projet:             msgTracker365
     :Nom du fichier:     msgTracker365.ps1
-    :depot GitHub:       https://github.com/poltergeist42/msgTracker365
-    :documentation:      https://poltergeist42.github.io/msgTracker365/
-    :Autheur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-    :Version:            20170913
+    :depot_GitHub:       https://github.com/poltergeist42/msgTracker365
+    :Documentation:      https://poltergeist42.github.io/msgTracker365/
+    :Auteur:            `Poltergeist42 <https://github.com/poltergeist42>`_
+    :Version:            20170914
 
 ####
 
@@ -24,9 +24,9 @@ Infos
 Descriptif
 ==========
 
-    :Projet:            Se projet est un projet PowerShell. L'objectif est de creer un
-                        script qui se connect automatiquement a Office365, interoge le
-                        Suivie de Message et envoie automatiquement le resultat par mail
+    :Projet:            Ce projet est un projet PowerShell. L'objectif est de créer un
+                        Script qui se connecte automatiquement a Office365, interroge le
+                        Suivie de Message et envoie automatiquement le résultat par mail
 
 ####
 
@@ -40,7 +40,7 @@ Reference Web
         # Se connecter à Office 365 PowerShell
     
     * https://technet.microsoft.com/fr-fr/library/dn568015.aspx
-        # Connexion a  tous les services Office 365
+        # Connexion a  tous les services Office 365
         # a l'aide d'une seule fenetre Windows PowerShell
     
 ####
@@ -57,69 +57,131 @@ Write-Host "`t## Debut du script : msgTracker365 ##"
 #                       #
 #########################
 
+## Paramètres pour l'authentification sur Office365 / Exchange Online
 $vCfgUser365 = "user@domain.dom"
-    # Login utilise pour l'authentification sur le compte Office365 / Exchange Online
+    # Login utilisé pour l'authentification sur le compte Office365 / Exchange Online
     #
-    # N.B : Le compte Office365 utilise doit au minimum faire partie des groupes :
+    # N.B : Le compte Office365 utilisé doit au minimum faire partie des groupes :
     # * Gestion de l’organisation (Organization management)
-    # * Gestion de la conformite (Compliance Management)
+    # * Gestion de la conformité (Compliance Management)
     #
-    # Attention : "user@domain.dom" doit etre remplacer par votre nom d'utilisateur
+    # Attention : "user@domain.dom" doit être remplacé par votre nom d'utilisateur
     # dans la version en production de ce script
     
 $vCfgPwd365 = "P@sSwOrd"
     # Mot de passe utiliser avec le login du compte  Office365 / Exchange Online
     #
-    # Attention : "P@sSwOrd" doit etre remplace par votre mot de passe
+    # Attention : "P@sSwOrd" doit être remplacé par votre mot de passe
     # dans la version en production de ce script
-    
+   
+   
+## Paramètre pour le domaine à auditer
 $vDomain = "*@domain.dom"
     # Nom de domaine a auditer  sur Office365 / Exchange Online
     #
-    # Attention : "*@domain.dom" doit etre remplacer par votre domain
+    # Attention : "*@domain.dom" doit être remplacé par votre domaine
     # dans la version en production de ce script
     
+
+## Paramètre de configuration de la période à auditer (du plus ancien au plus récent)
 $vCfgStartDate = 7
-    # Cette valeur (en nombre de jour) permet de definir la date a partir de la quelle on
-    # recupere les informations. Il s'agit de la date la plus ancienne. Cette date ne peut
-    # depasser 90 jours
+    # Cette valeur (en nombre de jour) permet de définir la date à partir de laquelle on
+    # récupère les informations. Il s'agit de la date la plus ancienne. Cette date ne peut
+    # dépasser 90 jours
 
 $vCfgEndDate = 0
-    # Cette valeur (en nombre de jour) permet de definir la date jusqu'a laquelle on
-    # récupère les informations. il s'agit de la date la plus recente. Si cette valeur est
-    # egale a 0, la date de fin serat la date actuelle
+    # Cette valeur (en nombre de jour) permet de définir la date jusqu'a laquelle on
+    # récupère les informations. il s'agit de la date la plus récente. Si cette valeur est
+    # égale à 0, la date de fin sera la date actuelle
 
+
+## Paramètres pour la générations des fichiers    
 $vCfgPath = ".\"
-    # Chemin utiliser pour enregistrer les fichiers identifier
-    # par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\', les fichiers seront crees
-    # dans le repertoire d'execution de ce script
+    # Chemin utilisé pour enregistrer les fichiers identifié
+    # par $vCfgExpCSV et $vCfgExpBody. Si 'vCfgPath' vaut '.\', les fichiers seront crées
+    # dans le répertoire d'exécution de ce script
     #
-    # N.B : le chemin doit exister sur le PC avant l'execution de se script. Ce chemin
-    # peut etre relatif ou absolu
+    # N.B : le chemin doit exister sur le PC avant l'exécution de se script. Ce chemin
+    # peut être relatif ou absolu
     
 $vCfgExpCSV = "Suivie_de_message.csv"
-    # Nom du fichier contenant le resultat de la requette. Les valeurs contenues dans se
-    # fichier sont separer par des virgules. la convention veut donc que l'extention
-    # du fichier soit au format "CSV" (Comma-separated values). Ce fichier est genere
-    # a l'endroit pointe par "$vCfgPath"
+    # Nom du fichier contenant le résultat de la requête. Les valeurs contenues dans se
+    # fichier sont séparer par des virgules. La convention veut donc que l'extension
+    # du fichier soit au format "CSV" (Comma-separated values). Ce fichier est généré
+    # à l'endroit pointé par "$vCfgPath"
     
 $vCfgExpBody = "Body.txt"
-    # Nom du fichier contenant le corp de l'email. Ce fichier peut etre utilise pour
-    # envoyer un email depuis un logiciel tiers (ex : smtpsend). Ce fichier est genere
-    # a l'endroit pointe par "$vCfgPath"
+    # Nom du fichier contenant le corps de l'email. Ce fichier peut être utilise pour
+    # envoyer un email depuis un logiciel tiers (ex : smtpsend). Ce fichier est généré
+    # à l'endroit pointe par "$vCfgPath"
+    
+    
+## Paramètre de configuration de l'envoie de Mail
+$vCfgSendMail = $TRUE
+    # Permet d'activer ou de désactiver l'envoie automatique du fichier '.csv' par mail.
+    # Les valeurs acceptées sont :
+    # * $TRUE   --> Envoie de mail activé
+    # * $False  --> Envoie de mail désactivé
+    
+$vCfgSendMailFrom = "user01@example.com"
+    # Adresse mail de l'expéditeur
+    #
+    # Attention : "user01@example.com" doit être remplacé par l'adresse l'expéditeur
+    # dans la version en production de ce script
+    
+$vCfgSendMailTo = "user02@example.com"
+    # Adresse Mail du déstinataire
+    #
+    # Attention : "user02@example.com" doit être remplacé par l'adresse du destinataire
+    # dans la version en production de ce script
+    
+$vCfgSendMailSmtp = "smtp.serveur.com"
+    # Serveur SMTP à utiliser pour l'envoie de Mail
+    #
+    # Attention : "smtp.serveur.com" doit être remplacé par votre serveur SMTP
+    # dans la version en production de ce script
+    
+$vCfgSendMailPort = 25
+    
+$vCfgSendMailAuth = $FLASE
+    # Permet d'activer ou de désactiver l'authentification sur le SMTP.
+    # Les valeurs acceptées sont :
+    # * $FALSE  --> Pas d'authentification
+    # * $TRUE   --> Authentification
+    #
+    # N.B : Si le serveur SMTP nécessite une authentification ($TRUE), les variables :
+    # 'vCfgSendMailUsr' et 'vCfgSendMailPwd' seront également à renseigner
+    
+$vCfgSendMailUsr = "user@domain.dom"
+    # Login utilisé pour l'authentification du SMTP
+    #
+    # Attention : "user@domain.dom" doit être remplacé par votre nom d'utilisateur
+    # dans la version en production de ce script
+    
+
+$vCfgSendMailPwd = "P@sSwOrd"
+    # Mot de passe utiliser avec le login du compte  d'authentification SMTP
+    #
+    # Attention : "P@sSwOrd" doit être remplace par votre mot de passe
+    # dans la version en production de ce script
     
 
 ##########################
 #                        #
-# variables de requette  #
+# Variables de requête   #
 #                        #
 ##########################
 
 $vPwd365 = ConvertTo-SecureString -String $vCfgPwd365 -AsPlainText -Force
 $Credential365 = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $vCfgUser365, $vPwd365
     # il faut utiliser l'option : -Credential $Credential365
-    # Pour pouvoir l'utiliser dans une requette
+    # Pour pouvoir l'utiliser dans une requête
 
+if (vCfgSendMailAuth) {
+    $vMailPwd = ConvertTo-SecureString -String $vCfgSendMailPwd -AsPlainText -Force
+    $CredentialMail = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $vCfgSendMailUsr, $vMailPwd
+    }
+    
 $vStartDate = (Get-Date).adddays(-1 * $vCfgStartDate)
 $vEndDate = (Get-Date).adddays(-1 * $vCfgEndDate)
 
@@ -132,11 +194,11 @@ $vBody_FQFM = "$vCfgPath\$vCfgExpBody"
     
 ##########################
 #                        #
-# Requettes et formatage #
+# Requêtes et formatage  #
 #                        #
 ##########################
 
-## Connection Ã  office 365
+## Connection Ã  office 365
 Import-Module MsOnline
 Connect-MsolService -Credential $Credential365
 
@@ -150,20 +212,43 @@ Import-PSSession $exchangeSession -DisableNameChecking
 ## Suivie de message
 $vMsgTrace = Get-MessageTrace -RecipientAddress $vDomain -StartDate $vStartDate -EndDate $vEndDate | Sort-Object `
 -Property Received | Select-Object Received, RecipientAddress, SenderAddress
-    # Attention, Get-MessageTrace parcour la liste du plus ancien (StartDate) vers le plus recent (EndDate)
+    # Attention, Get-MessageTrace parcourt la liste du plus ancien (StartDate) vers le plus récent (EndDate)
 
 $vMsgTraceMeasure = $vMsgTrace | measure
 $vMsgTraceCount = $vMsgTraceMeasure.Count
 
 $vMsgTrace | Export-Csv -Path $vCSV_FQFN
-$vBody = "Bonjour.`n`nNombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domain` `'$vDomain`' : $vMsgTraceCount`n`nVous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'`n`nCordialement,` l'équipe ICS"
+$vBody = "Bonjour.`n`nNombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domaine`  `'$vDomain`' : $vMsgTraceCount`n`nVous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'`n`nCordialement,`  l'équipe ICS"
 
 $vBody | Out-File -FilePath $vBody_FQFM
 
-<# TODO :
-envoyer automatiquement un mail avec $vBody dans le corp du message et $vCSV_FQFN en pièce jointe
-#>
 
+##########################
+#                        #
+#     Envoie de Mail     #
+#                        #
+##########################
+
+if (vCfgSendMail) {
+    if ($vCfgSendMailAuth) {
+        Send-MailMessage -From $vCfgSendMailFrom`
+        -To $vCfgSendMailTo`
+        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort"`
+        -Body $vBody`
+        -Attachments $vCSV_FQFN`
+        -Credential $CredentialMail`
+        -SmtpServer $vCfgSendMailSmtp`
+        -Port $vCfgSendMailPort
+    }
+    else {
+        Send-MailMessage -From $vCfgSendMailFrom`
+        -To $vCfgSendMailTo`
+        -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort"`
+        -Body $vBody`
+        -Attachments $vCSV_FQFN`
+        -SmtpServer $vCfgSendMailSmtp`
+        -Port $vCfgSendMailPort
+    }}
 
 ##########################
 #                        #

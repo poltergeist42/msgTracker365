@@ -12,7 +12,7 @@ Informations générales msgTracker365
 ####
 
 Descriptions
-===========
+============
 
 Ce projet est un projet PowerShell. L'objectif est de créer un script qui se connecte
 automatiquement à Office365, interroge le Suivie de Message et envoie automatiquement le
@@ -124,13 +124,15 @@ Utilisation
             Permet de définir l'encodage des fichiers et du mail. La valeur "Default",
             récupère l'encodage du système depuis lequel est exécuter ce script.
             Les valeurs acceptées sont :
+            
                 * "Unicode", "UTF7", "UTF8", "ASCII", "UTF32", "BigEndianUnicode", "Default", "OEM"
     
         :vCfgSendMail:
             Permet d'activer ou de désactiver l'envoie automatique du fichier '.csv' par
             mail. Les valeurs acceptées sont :
+            
                 * $TRUE   --> Envoie de mail activé
-                * $False  --> Envoie de mail désactivé
+                * $FALSE  --> Envoie de mail désactivé
                 
             **N.B** : Cette fonctionnalité est désactivé par défaut ($FALSE)
     
@@ -158,6 +160,7 @@ Utilisation
         :vCfgSendMailAuth:
             Permet d'activer ou de désactiver l'authentification sur le SMTP.
             Les valeurs acceptées sont :
+            
                 * $FALSE  --> Pas d'authentification
                 * $TRUE   --> Authentification
 

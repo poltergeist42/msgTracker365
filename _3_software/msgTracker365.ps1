@@ -7,7 +7,7 @@ Infos
     :depot_GitHub:       https://github.com/poltergeist42/msgTracker365
     :Documentation:      https://poltergeist42.github.io/msgTracker365/
     :Auteur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-    :Version:            20170918
+    :Version:            20170920
 
 ####
 
@@ -138,25 +138,24 @@ $vCfgExpBody = "Body.txt"
     # à l'endroit pointe par "$vCfgPath"
     
 $vCfgEncoding = "Default"
-    # Permet de définir l'encodage des fichiers. La valeur "Default",
+    # Permet de définir l'encodage des fichiers et du mail. La valeur "Default",
     # récupère l'encodage du système depuis lequel est exécuter ce script.
     # Les valeurs acceptées sont :
     # "Unicode", "UTF7", "UTF8", "ASCII", "UTF32",
     # "BigEndianUnicode", "Default", "OEM"
 
     
-    
 ## Paramètre de configuration de l'envoie de Mail
 $vCfgSendMail = $False
     # Permet d'activer ou de désactiver l'envoie automatique du fichier '.csv' par mail.
     # Les valeurs acceptées sont :
     # * $TRUE   --> Envoie de mail activé
-    # * $False  --> Envoie de mail désactivé
+    # * $FALSE  --> Envoie de mail désactivé
     
 $vCfgSendMailFrom = "user01@example.com"
     # Adresse mail de l'expéditeur
     #
-    # Attention : "user01@example.com" doit être remplacé par l'adresse l'expéditeur
+    # Attention : "user01@example.com" doit être remplacé par l'adresse de l'expéditeur
     # dans la version en production de ce script
     
 $vCfgSendMailTo = "user02@example.com"
@@ -172,8 +171,9 @@ $vCfgSendMailSmtp = "smtp.serveur.com"
     # dans la version en production de ce script
     
 $vCfgSendMailPort = 25
+    # Numéro de port utilisé par le serveur SMTP
     
-$vCfgSendMailAuth = $FLASE
+$vCfgSendMailAuth = $TRUE
     # Permet d'activer ou de désactiver l'authentification sur le SMTP.
     # Les valeurs acceptées sont :
     # * $FALSE  --> Pas d'authentification
@@ -262,6 +262,7 @@ $vBody | Out-File -FilePath $vBody_FQFM -Encoding $vCfgEncoding
 if ($vCfgSendMail) {
     if ($vCfgSendMailAuth) {
         Send-MailMessage -From $vCfgSendMailFrom `
+        -Encoding $vCfgEncoding `
         -To $vCfgSendMailTo `
         -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort" `
         -Body $vBody `
@@ -272,6 +273,7 @@ if ($vCfgSendMail) {
     }
     else {
         Send-MailMessage -From $vCfgSendMailFrom `
+        -Encoding $vCfgEncoding `
         -To $vCfgSendMailTo `
         -Subject "Rapport de Suivie de message entre le $vStartDateShort et le $vEndDateShort" `
         -Body $vBody `

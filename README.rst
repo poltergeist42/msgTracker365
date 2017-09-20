@@ -16,11 +16,8 @@ Descriptions
 
 Ce projet est un projet PowerShell. L'objectif est de créer un script qui se connecte
 automatiquement à Office365, interroge le Suivie de Message et envoie automatiquement le
-résultat par mail
+résultat par mail.
 
-**N.B** : dans la version "20170913", l'envoie de mail doit être effectué depuis
-un logiciel tiers.
- 
 ####
 
 Téléchargement / Installation
@@ -89,6 +86,16 @@ Utilisation
             la quelle on récupère les informations. Il s'agit de la date la plus ancienne.
             Cette date ne peut dépasser 90 jours.
             
+        :vCfgNumOfPage:
+            Cette valeur permet de déterminer le nombre de pages affichées
+            dans le suivie de message. Cette valeur est comprise entre 1 et 5000.
+            La valeur par défaut est de 1.
+    
+        :vCfgItemPerPage:
+            Cette valeur permet de déterminer le nombre d'élément à afficher
+            dans le suivie de message. Cette valeur est comprise entre 1 et 5000.
+            La valeur par défaut est de 1000.
+            
         :vCfgEndDate:
             Cette valeur (en nombre de jour) permet de définir la date jusqu'a laquelle on
             récupère les informations. Il s'agit de la date la plus récente. Si cette
@@ -112,14 +119,66 @@ Utilisation
             Nom du fichier contenant le corps de l'email. Ce fichier peut être utilisé
             pour envoyer un email depuis un logiciel tiers (ex : smtpsend).
             Ce fichier est généré à l'endroit pointé par "$vCfgPath".
-    
+            
+        :vCfgEncoding:
+            Permet de définir l'encodage des fichiers et du mail. La valeur "Default",
+            récupère l'encodage du système depuis lequel est exécuter ce script.
+            Les valeurs acceptées sont :
+                * "Unicode", "UTF7", "UTF8", "ASCII", "UTF32", "BigEndianUnicode", "Default", "OEM"
     
         :vCfgSendMail:
             Permet d'activer ou de désactiver l'envoie automatique du fichier '.csv' par
             mail. Les valeurs acceptées sont :
-            
                 * $TRUE   --> Envoie de mail activé
                 * $False  --> Envoie de mail désactivé
+                
+            **N.B** : Cette fonctionnalité est désactivé par défaut ($FALSE)
+    
+        :vCfgSendMailFrom:
+            Adresse mail de l'expéditeur
+
+            **Attention** : "user01@example.com" doit être remplacé par l'adresse de
+            l'expéditeur dans la version en production de ce script.
+    
+        :vCfgSendMailTo:
+            Adresse Mail du destinataire
+
+            **Attention** : "user02@example.com" doit être remplacé par l'adresse
+            du destinataire dans la version en production de ce script.
+    
+        :vCfgSendMailSmtp:
+            Serveur SMTP à utiliser pour l'envoie de Mail.
+
+            **Attention** : "smtp.serveur.com" doit être remplacé par votre serveur SMTP
+            dans la version en production de ce script.
+    
+        :vCfgSendMailPort:
+            Numéro de port utilisé par le serveur SMTP.
+        
+        :vCfgSendMailAuth:
+            Permet d'activer ou de désactiver l'authentification sur le SMTP.
+            Les valeurs acceptées sont :
+                * $FALSE  --> Pas d'authentification
+                * $TRUE   --> Authentification
+
+            **N.B** : Si le serveur SMTP nécessite une authentification ($TRUE),
+            les variables : 'vCfgSendMailUsr' et 'vCfgSendMailPwd'
+            seront également à renseigner. Ce mode est activé par défaut en cas d'envoie
+            automatique d'un mail depuis se script.
+    
+        :vCfgSendMailUsr:
+            Login utilisé pour l'authentification du SMTP.
+
+            **Attention** : "user@domain.dom" doit être remplacé par votre nom
+            d'utilisateur dans la version en production de ce script.
+
+        :vCfgSendMailPwd:
+            Mot de passe utiliser avec le login du compte  d'authentification SMTP.
+
+            **Attention** : "P@sSwOrd" doit être remplace par votre mot de passe
+            dans la version en production de ce script.
+    
+
     
     #. **Automatisation et planification**
     

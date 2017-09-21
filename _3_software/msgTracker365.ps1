@@ -7,7 +7,7 @@ Infos
     :depot_GitHub:       https://github.com/poltergeist42/msgTracker365
     :Documentation:      https://poltergeist42.github.io/msgTracker365/
     :Auteur:            `Poltergeist42 <https://github.com/poltergeist42>`_
-    :Version:            20170920
+    :Version:            20170921
 
 ####
 
@@ -248,7 +248,15 @@ $vMsgTraceMeasure = $vMsgTrace | measure
 $vMsgTraceCount = $vMsgTraceMeasure.Count
 
 $vMsgTrace | Export-Csv -Path $vCSV_FQFN  -Delimiter ";" -Encoding $vCfgEncoding
-$vBody = "Bonjour.`n`nNombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domaine `'$vDomain`' : $vMsgTraceCount`n`nVous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'`n`nCordialement, l'équipe ICS"
+$vBody = @"
+Bonjour.
+
+Nombre total de courriels reçu entre $vStartDateShort et $vEndDateShort pour le domaine `'$vDomain`' : $vMsgTraceCount
+
+Vous trouverez le détail dans la pièce jointe nommée : `'$vCfgExpCSV`'
+
+Cordialement, l'équipe ICS
+"@
 
 $vBody | Out-File -FilePath $vBody_FQFM -Encoding $vCfgEncoding
 
@@ -291,4 +299,4 @@ if ($vCfgSendMail) {
 ## Fermeture de toutes les sessions distantes (les PSSession)
 Get-PSSession | Remove-PSSession
 
-Write-Host "`n`t## Fin du script : msgTracker365 ##"
+Write-Host "`r`t## Fin du script : msgTracker365 ##"
